@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navgraph"
+    app:startDestination="@id/mainActivity">
+
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="com.example.mygrocery.MainActivity"
+        android:label="activity_main"
+        tools:layout="@layout/activity_main" />
+    <activity
+        android:id="@+id/addGroceryItemActivity"
+        android:name="com.example.mygrocery.AddGroceryItemActivity"
+        android:label="activity_add_grocery_item"
+        tools:layout="@layout/activity_add_grocery_item" />
+    <action
+        android:id="@+id/action_global_addGroceryItemActivity"
+        app:destination="@id/addGroceryItemActivity" />
+</navigation>

@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -13,14 +16,22 @@ import android.view.MenuItem;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.example.mygrocery.Adapters.GroceryItemAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
+ private List<GroceryItem> groceryItemList= new ArrayList<GroceryItem>();
+ private RecyclerView recyclerView;
+ private GroceryItemAdapter groceryItemAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
-
+        setSupportActionBar(toolbar);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -34,6 +45,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        recyclerView=(RecyclerView) findViewById((R.id.myRecyclerView));
+        groceryItemAdapter= new GroceryItemAdapter(groceryItemList);
+        RecyclerView.LayoutManager layoutManager= new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(groceryItemAdapter);
+
+        groceryItemList.add(new GroceryItem("Product 1", "2"));
+        groceryItemList.add(new GroceryItem("Product 2", "2"));
+        groceryItemList.add(new GroceryItem("Product 3", "2"));
+
+        groceryItemAdapter.notifyDataSetChanged();
         //LoadGroceries();
     }
 
@@ -70,5 +93,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void viewItem(View view) {
+        Intent intent = new Intent(this, ViewActivity.class);
+        startActivity(intent);
     }
 }

@@ -1,11 +1,14 @@
 package com.example.mygrocery;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 
 public class AddGroceryItemActivity extends AppCompatActivity {
 
@@ -16,7 +19,7 @@ public class AddGroceryItemActivity extends AppCompatActivity {
 
         ActionBar actionBar= getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
 
     }
 
@@ -35,5 +38,19 @@ public class AddGroceryItemActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void addBook(View view) {
+        EditText titleText=(EditText)findViewById(R.id.label_text);
+        String title= titleText.getText().toString();
+        EditText quantityEditText= (EditText)findViewById(R.id.quanity_text);
+        String quantity= quantityEditText.getText().toString();
+        Log.d("to-be-added-name",title);
+        Log.d("to-be-added-quantity",quantity);
+
+        Intent intent= new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish();
     }
 }

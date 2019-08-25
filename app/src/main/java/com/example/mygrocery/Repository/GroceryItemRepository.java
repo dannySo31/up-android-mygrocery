@@ -55,6 +55,26 @@ public class GroceryItemRepository implements IRepository<GroceryItem> {
     }
 
     @Override
+    public long Update(GroceryItem entity) {
+
+        SQLiteDatabase db;
+
+        db = context.getWritableDatabase();
+
+            ContentValues values = new ContentValues();
+        values.put(GroceryItem.COLUMN_NAME, entity.getName());
+        values.put(GroceryItem.COLUMN_QUANTITY, entity.getQuantity());
+        values.put(GroceryItem.COLUMN_ID, entity.getId());
+            // updating row
+            long id= db.update(GroceryItem.TABLE_NAME, values, GroceryItem.COLUMN_ID + " = ?",
+                    new String[]{String.valueOf(entity.getId())});
+        context.close();
+
+        return  id;
+
+    }
+
+    @Override
     public long Insert(GroceryItem entity, boolean closeContext) {
 
         SQLiteDatabase db;
@@ -74,6 +94,15 @@ public class GroceryItemRepository implements IRepository<GroceryItem> {
             context.close();
         // return newly inserted row id
         return id;
+    }
+
+    @Override
+    public void Delete(GroceryItem entity) {
+        SQLiteDatabase db;
+         db = context.getWritableDatabase();
+        db.delete(GroceryItem.TABLE_NAME, GroceryItem.COLUMN_ID + " = ?",
+                new String[]{String.valueOf(entity.getId())});
+        db.close();
     }
 
     @Override

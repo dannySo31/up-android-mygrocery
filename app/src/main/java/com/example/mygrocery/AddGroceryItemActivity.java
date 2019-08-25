@@ -8,23 +8,51 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.mygrocery.Context.DbContext;
+import com.example.mygrocery.Enum.GroceryItem_Operation;
 import com.example.mygrocery.Repository.GroceryItemRepository;
 
 public class AddGroceryItemActivity extends BaseActivity {
     private DbContext db;
     private long entityId;
+    private boolean operation;
     public AddGroceryItemActivity() {
         this.db = new DbContext(this);
         entityId=0;
+        operation= false;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_grocery_item);
+        Intent intent= getIntent();
+
+        if(intent!=null){
+            Button operationButton=(Button) findViewById(R.id.btn_operation);
+            operation= (Boolean) intent.getBooleanExtra("isEdit",false);
+            Log.d("Operation",""+ operation);
+            if (!operation){
+
+                operationButton.setText(R.string.add_item_btn);
+                setTitle(R.string.add_grocery_item);
+                entityId=0;
+
+            }else{
+                GroceryItem item= (GroceryItem)intent.getSerializableExtra("GroceryItemName");
+                operationButton.setText(R.string.update_item_btn);
+                setTitle(R.string.update_item_btn);
+                entityId= item.getId();
+                EditText titleText=(EditText)findViewById(R.id.label_text);
+                titleText.setText(item.getName());
+                EditText quantityEditText= (EditText)findViewById(R.id.quanity_text);
+                quantityEditText.setText(item.getQuantity());
+            }
+        }
+
 
         ActionBar actionBar= getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -60,9 +88,13 @@ public class AddGroceryItemActivity extends BaseActivity {
         groceryItem.setId(entityId);
         groceryItem.setName(title);
         groceryItem.setQuantity(quantity);
-        groceryItemRepository.Insert(groceryItem,true);
-        Log.d("to-be-added-name",title);
-        Log.d("to-be-added-quantity",quantity);
+        if(operation){
+            groceryItemRepository.Update(groceryItem);
+        }else{
+            groceryItemRepository.Insert(groceryItem,true);
+        }
+
+
 
         Intent intent= new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

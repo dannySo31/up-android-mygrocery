@@ -17,24 +17,26 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.example.mygrocery.Adapters.GroceryItemAdapter;
+import com.example.mygrocery.Context.DbContext;
 import com.example.mygrocery.Listeners.RecyclerTouchListener;
+import com.example.mygrocery.Repository.GroceryItemRepository;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements Serializable {
+public class MainActivity extends BaseActivity {
  private List<GroceryItem> groceryItemList= new ArrayList<GroceryItem>();
  private RecyclerView recyclerView;
  private GroceryItemAdapter groceryItemAdapter;
-
+    private DbContext db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+         db= new DbContext(this);
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,9 +72,15 @@ public class MainActivity extends AppCompatActivity implements Serializable {
 
             }
         }));
-        groceryItemList.add(new GroceryItem("Product 1", "2"));
-        groceryItemList.add(new GroceryItem("Product 2", "2"));
-        groceryItemList.add(new GroceryItem("Product 3", "2"));
+       // groceryItemList.add(new GroceryItem("Product 1", "2"));
+       // groceryItemList.add(new GroceryItem("Product 2", "2"));
+       // groceryItemList.add(new GroceryItem("Product 3", "2"));
+        //dbContext= new DbContext(getApplicationContext());
+       GroceryItemRepository groceryItemRepository= new GroceryItemRepository(db);
+       for (GroceryItem item: groceryItemRepository.GetAll()){
+
+           groceryItemList.add(item);
+       }
 
         groceryItemAdapter.notifyDataSetChanged();
         //LoadGroceries();

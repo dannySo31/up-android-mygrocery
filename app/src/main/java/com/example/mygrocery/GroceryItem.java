@@ -5,7 +5,13 @@ import android.os.Parcelable;
 
 import java.io.Serializable;
 
-public class GroceryItem  implements  Serializable {
+public class GroceryItem  extends BaseClass {
+
+    public static final String TABLE_NAME = "GroceryItem";
+
+    public static final String COLUMN_ID = "id";
+    public static final String COLUMN_NAME = "name";
+    public static final String COLUMN_QUANTITY = "quantity";
 
     public GroceryItem(){
 
@@ -16,6 +22,11 @@ public class GroceryItem  implements  Serializable {
         this.name=name;
         this.quantity=quantity;
     }
+
+    private long id;
+
+    public long getId() { return this.id; }
+    public void setId(long id) { this.id = id; }
     private String name;
 
     public String getName() { return this.name; }

@@ -7,7 +7,7 @@ import android.widget.TextView;
 
 import java.io.Serializable;
 
-public class ViewActivity extends AppCompatActivity implements Serializable {
+public class ViewActivity extends BaseActivity {
  GroceryItem groceryItem;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

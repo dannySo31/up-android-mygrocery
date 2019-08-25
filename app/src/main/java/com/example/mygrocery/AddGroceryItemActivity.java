@@ -10,7 +10,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
-public class AddGroceryItemActivity extends AppCompatActivity {
+import com.example.mygrocery.Context.DbContext;
+import com.example.mygrocery.Repository.GroceryItemRepository;
+
+public class AddGroceryItemActivity extends BaseActivity {
+    private DbContext db;
+    private long entityId;
+    public AddGroceryItemActivity() {
+        this.db = new DbContext(this);
+        entityId=0;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +54,13 @@ public class AddGroceryItemActivity extends AppCompatActivity {
         String title= titleText.getText().toString();
         EditText quantityEditText= (EditText)findViewById(R.id.quanity_text);
         String quantity= quantityEditText.getText().toString();
+
+        GroceryItemRepository groceryItemRepository= new GroceryItemRepository(db);
+        GroceryItem groceryItem= new GroceryItem();
+        groceryItem.setId(entityId);
+        groceryItem.setName(title);
+        groceryItem.setQuantity(quantity);
+        groceryItemRepository.Insert(groceryItem,true);
         Log.d("to-be-added-name",title);
         Log.d("to-be-added-quantity",quantity);
 

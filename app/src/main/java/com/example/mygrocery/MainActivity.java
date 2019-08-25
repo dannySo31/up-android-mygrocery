@@ -49,6 +49,19 @@ public class MainActivity extends BaseActivity {
             }
         });
 
+
+       // groceryItemList.add(new GroceryItem("Product 1", "2"));
+       // groceryItemList.add(new GroceryItem("Product 2", "2"));
+       // groceryItemList.add(new GroceryItem("Product 3", "2"));
+        //dbContext= new DbContext(getApplicationContext());
+
+
+
+        //LoadGroceries();
+    }
+
+    private void PopulateGroceryItems() {
+        groceryItemList= new ArrayList<GroceryItem>();
         recyclerView=(RecyclerView) findViewById((R.id.myRecyclerView));
         groceryItemAdapter= new GroceryItemAdapter(groceryItemList);
         RecyclerView.LayoutManager layoutManager= new LinearLayoutManager(getApplicationContext());
@@ -72,18 +85,13 @@ public class MainActivity extends BaseActivity {
 
             }
         }));
-       // groceryItemList.add(new GroceryItem("Product 1", "2"));
-       // groceryItemList.add(new GroceryItem("Product 2", "2"));
-       // groceryItemList.add(new GroceryItem("Product 3", "2"));
-        //dbContext= new DbContext(getApplicationContext());
-       GroceryItemRepository groceryItemRepository= new GroceryItemRepository(db);
-       for (GroceryItem item: groceryItemRepository.GetAll()){
+        GroceryItemRepository groceryItemRepository= new GroceryItemRepository(db);
+        for (GroceryItem item: groceryItemRepository.GetAll()){
 
-           groceryItemList.add(item);
-       }
+            groceryItemList.add(item);
+        }
 
         groceryItemAdapter.notifyDataSetChanged();
-        //LoadGroceries();
     }
 
     private void LoadGroceries() {
@@ -96,6 +104,14 @@ public class MainActivity extends BaseActivity {
            scrollView.addView(textView);
 
        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        db= new DbContext(this);
+        Log.d("Resume","Resumed");
+        PopulateGroceryItems();
     }
 
     @Override

@@ -17,11 +17,13 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.example.mygrocery.Adapters.GroceryItemAdapter;
+import com.example.mygrocery.Listeners.RecyclerTouchListener;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Serializable {
  private List<GroceryItem> groceryItemList= new ArrayList<GroceryItem>();
  private RecyclerView recyclerView;
  private GroceryItemAdapter groceryItemAdapter;
@@ -51,7 +53,23 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(groceryItemAdapter);
+        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), recyclerView, new RecyclerTouchListener.ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                GroceryItem groceryItem = groceryItemList.get(position);
+                String message= groceryItem.getName() + ": " + groceryItem.getQuantity();
+                //Snackbar.make(view,message, Snackbar.LENGTH_LONG).setAction("Action", null).show();
 
+                Intent intent= new Intent(getApplicationContext(), ViewActivity.class);
+                intent.putExtra("GroceryItemName", groceryItem);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));
         groceryItemList.add(new GroceryItem("Product 1", "2"));
         groceryItemList.add(new GroceryItem("Product 2", "2"));
         groceryItemList.add(new GroceryItem("Product 3", "2"));
